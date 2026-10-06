@@ -1,0 +1,24 @@
+PROTOTYPE CHALANA KAISE HAI?
+============================
+
+Koi software install nahi chahiye, koi internet nahi chahiye.
+
+Bas index.html pe DOUBLE-CLICK karo.
+Default browser (Chrome / Edge / Safari / Firefox) me khul jayega.
+
+Kya kaam karega:
+- 3 flagged clips dikhenge (Ridgeline #4/#14, Cobblestone #1/#11,
+  aur ek digit-swap wala #12 vs #21).
+- Har clip pe:
+    * "That's #N Name" wale button -> 1-tap confirm
+    * "Someone else..." -> poori roster me se choose karne ke liye
+    * "Not a highlight / skip" -> clip kisi ke reel me nahi jayega
+- Jab teeno clips resolve ho jayenge, neeche "Send weekly recap"
+  button green (active) ho jayega. Uspe click karo -> recap "sent"
+  ho jayega.
+
+ONLINE PUBLIC LINK BANANE KE LIYE (assessment me link submit karna ho to):
+- https://app.netlify.com/drop  kholo (koi account nahi chahiye)
+- is "prototype" folder ko browser pe drag & drop karo
+- 10 seconds me public link mil jayegi, usko SUBMISSION.md me
+  daal dena.

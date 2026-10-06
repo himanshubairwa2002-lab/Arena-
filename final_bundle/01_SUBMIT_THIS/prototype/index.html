@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SidelineReel — Roster Tagging Review (Coach Preview)</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232d; --line:#262d38;
+    --text:#e6edf3; --muted:#8b949e; --accent:#3fb950; --warn:#d29922;
+    --bad:#f85149; --blue:#58a6ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg);color:var(--text);}
+  header{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 24px;
+         display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-weight:700;font-size:18px;letter-spacing:.3px}
+  .logo span{color:var(--accent)}
+  .crumbs{color:var(--muted);font-size:13px}
+  main{max-width:1200px;margin:0 auto;padding:24px;}
+  .hrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+  h1{font-size:22px;margin:0}
+  .sub{color:var(--muted);font-size:14px;margin-top:4px}
+  .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+  .b-warn{background:rgba(210,153,34,.15);color:var(--warn)}
+  .b-ok{background:rgba(63,185,80,.15);color:var(--accent)}
+  .b-bad{background:rgba(248,81,73,.15);color:var(--bad)}
+  .b-info{background:rgba(88,166,255,.15);color:var(--blue)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .stat .n{font-size:22px;font-weight:700}
+  .stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
+  .layout{display:grid;grid-template-columns:1fr 360px;gap:20px}
+  @media (max-width:960px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .clip{display:flex;gap:14px;padding:14px;border:1px solid var(--line);border-radius:10px;
+        background:var(--panel2);margin-bottom:12px;align-items:flex-start}
+  .thumb{width:180px;height:110px;border-radius:8px;background:#000;flex-shrink:0;
+         position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .thumb .jersey{font-size:48px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+  .thumb .detected{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.7);
+                   color:var(--warn);font-size:11px;font-weight:700;padding:3px 6px;border-radius:4px;
+                   border:1px solid var(--warn)}
+  .thumb .time{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.7);
+               color:#fff;font-size:11px;padding:2px 6px;border-radius:3px}
+  .meta{flex:1;min-width:0}
+  .clip h3{margin:0 0 4px;font-size:15px}
+  .who{display:flex;align-items:center;gap:10px;margin:6px 0 8px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;
+        font-size:13px;font-weight:600}
+  .p-current{background:rgba(210,153,34,.18);color:var(--warn);border:1px solid var(--warn)}
+  .p-alt{background:rgba(88,166,255,.1);color:var(--blue);border:1px solid var(--blue)}
+  .reason{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+  .conf{font-size:12px;color:var(--muted);margin-bottom:10px}
+  .confbar{height:6px;background:#2a313c;border-radius:3px;overflow:hidden;margin-top:4px}
+  .confbar > div{height:100%;background:linear-gradient(90deg,var(--bad),var(--warn),var(--accent))}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  button{font-family:inherit;font-size:13px;font-weight:600;border-radius:8px;border:1px solid var(--line);
+         padding:8px 14px;cursor:pointer;background:var(--panel);color:var(--text);transition:.12s}
+  button:hover{border-color:var(--blue)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#0b100b}
+  button.primary:hover{filter:brightness(1.1)}
+  button.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
+  button.danger:hover{background:rgba(248,81,73,.1)}
+  button.ghost{background:transparent}
+  .sidebar h3{margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+  .roster-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;
+               background:var(--panel2);margin-bottom:8px}
+  .roster-item .num{width:32px;height:32px;border-radius:50%;background:#2a313c;display:flex;
+                    align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+  .roster-item .name{flex:1;font-size:14px}
+  .roster-item .cnt{font-size:12px;color:var(--muted)}
+  .footer-bar{position:sticky;bottom:0;background:var(--panel);border-top:1px solid var(--line);
+              padding:14px 24px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .progress{flex:1;height:8px;background:#2a313c;border-radius:4px;overflow:hidden;margin:0 16px;max-width:400px}
+  .progress > div{height:100%;background:var(--accent);transition:width .3s}
+  .toast{position:fixed;top:20px;right:20px;background:var(--accent);color:#0b100b;
+         padding:12px 18px;border-radius:10px;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.4);
+         transform:translateX(400px);transition:.3s;z-index:50}
+  .toast.show{transform:translateX(0)}
+  .empty{text-align:center;padding:60px 20px;color:var(--muted)}
+  .empty h2{color:var(--text);margin:0 0 8px}
+  .conflicts{background:rgba(210,153,34,.08);border:1px solid var(--warn);border-radius:10px;padding:12px;margin-bottom:16px;font-size:13px}
+  .conflicts b{color:var(--warn)}
+  .final-card{border:1px solid var(--accent)}
+  .send-btn{background:var(--accent);color:#0b100b;border-color:var(--accent);padding:10px 20px}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;
+            justify-content:center;z-index:40;padding:20px}
+  .modal-bg.open{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;max-width:520px;width:100%}
+  .modal h2{margin-top:0}
+  .num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0}
+  .num-grid button{padding:12px 0;font-size:16px}
+  .num-grid button.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+  .step{display:none}
+  .step.active{display:block}
+  .tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--line);padding-bottom:0}
+  .tab{padding:10px 16px;cursor:pointer;font-size:14px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab.active{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span>●</span> SidelineReel <span style="color:var(--muted);font-weight:400;font-size:13px">Coach Console</span></div>
+  <div class="crumbs">Ridgeline U14 Raptors · Game vs. Westside · Sat Oct 4</div>
+</header>
+
+<main>
+  <div class="hrow">
+    <div>
+      <h1>Review &amp; Send Weekly Recap <span class="badge b-warn">3 clips need your eye</span></h1>
+      <div class="sub">SidelineReel auto-tagged 19 highlights. 3 fell below confidence or hit a known number-confusion pair. Quick glance before it goes to parents.</div>
+    </div>
+    <div>
+      <span class="badge b-info">Coach review · Est. 90 seconds</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="s-total">19</div><div class="l">Highlights detected</div></div>
+    <div class="stat"><div class="n" style="color:var(--warn)" id="s-review">3</div><div class="l">Need review</div></div>
+    <div class="stat"><div class="n" style="color:var(--accent)" id="s-auto">16</div><div class="l">Auto-confirmed</div></div>
+    <div class="stat"><div class="n" style="color:var(--muted)" id="s-fixed">0</div><div class="l">Fixed by you</div></div>
+  </div>
+
+  <div class="conflicts" id="conflictBox">
+    <b>⚠ Why you're seeing this:</b> These clips have jersey numbers the model sometimes misreads (e.g. 1 vs 11, 4 vs 14, digit-swaps), were partially occluded, or fell under 85% confidence. Tap confirm, pick the right player, or skip.
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="card" id="clipList"></div>
+
+      <div class="card final-card" style="margin-top:20px">
+        <h3 style="margin:0 0 8px">Ready to send?</h3>
+        <div style="color:var(--muted);font-size:14px;margin-bottom:14px" id="readyMsg">Finish reviewing the flagged clips to unlock send.</div>
+        <button class="send-btn" id="sendBtn" disabled onclick="sendRecap()">Send weekly recap to 16 families</button>
+        <button class="ghost" style="margin-left:8px" onclick="saveDraft()">Save draft &amp; finish later</button>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <div class="card" style="margin-bottom:16px">
+        <h3>Roster</h3>
+        <div id="roster"></div>
+      </div>
+      <div class="card">
+        <h3>What got fixed this week</h3>
+        <ul style="margin:0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.7">
+          <li>Number-confusion pairs (1↔11, 4↔14, 12↔21 …) route to coach review by default.</li>
+          <li>Clips stay in "coach review" until confirmed — never silently assigned.</li>
+          <li>Parents see their reel the morning after the game, not late at night.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="footer-bar">
+  <div style="font-size:13px;color:var(--muted)">Review progress</div>
+  <div class="progress"><div id="progBar" style="width:0%"></div></div>
+  <div style="font-size:13px" id="progText">0 / 3 reviewed</div>
+</div>
+
+<div class="toast" id="toast">Saved.</div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h2>Assign clip to player</h2>
+    <div style="color:var(--muted);font-size:14px" id="modalSub">Pick the player this highlight belongs to.</div>
+    <div class="num-grid" id="numGrid"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="ghost" onclick="closeModal()">Cancel</button>
+      <button class="primary" onclick="confirmAssign()">Assign</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- Seed data based on real support tickets from the assessment ----
+const players = [
+  {num:1,  name:"Liam Okafor",      clips:2},
+  {num:4,  name:"Sofia Alvarez",    clips:1},
+  {num:7,  name:"Noah Park",        clips:3},
+  {num:9,  name:"Ethan Zhao",       clips:2},
+  {num:10, name:"Maya Chen",        clips:2},
+  {num:11, name:"Jaden Brooks",     clips:1},
+  {num:14, name:"Amara Reyes",      clips:1},
+  {num:17, name:"Priya Nair",       clips:2},
+  {num:21, name:"Lucas Schmidt",    clips:2},
+  {num:23, name:"Isabella Garcia",  clips:1},
+];
+
+// The three flagged clips — each mirrors a real support ticket scenario
+const clips = [
+  {
+    id:1, jersey:4,  detected:14,
+    title:"Goal-line save, 2nd half, 48:12",
+    reason:"Detected #14 but jersey looks digit-transposed. Likely confusion pair 4↔14.",
+    confidence:42,
+    thumbColor:"#1f3b5c", options:[{num:14,name:"Amara Reyes"},{num:4,name:"Sofia Alvarez"}],
+    status:"review", assignedTo:null, thumbNum:"14?"
+  },
+  {
+    id:2, jersey:11, detected:1,
+    title:"Breakaway run, 2nd half, 61:05",
+    reason:"Single-digit vs. double-digit ambiguity. Number '1' read instead of '11'. Confusion pair 1↔11.",
+    confidence:58,
+    thumbColor:"#3c1f5c", options:[{num:1,name:"Liam Okafor"},{num:11,name:"Jaden Brooks"}],
+    status:"review", assignedTo:null, thumbNum:"1?"
+  },
+  {
+    id:3, jersey:21, detected:12,
+    title:"Through-ball assist, 1st half, 23:40",
+    reason:"Digit swap detected: model read '12' but roster has no #12. Closest match #21. Player partially occluded.",
+    confidence:61,
+    thumbColor:"#1f5c3b", options:[{num:21,name:"Lucas Schmidt"},{num:null,name:"Not sure / flag for later"}],
+    status:"review", assignedTo:null, thumbNum:"12?"
+  }
+];
+
+let pickTarget = null;
+let pickNum = null;
+
+function render(){
+  const list = document.getElementById('clipList');
+  list.innerHTML = "";
+  clips.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'clip';
+    let statusBadge = "";
+    if(c.status === 'confirmed'){
+      const p = players.find(x=>x.num===c.assignedTo);
+      statusBadge = `<span class="badge b-ok">✓ Assigned to #${p.num} ${p.name.split(' ')[0]}</span>`;
+    } else if(c.status === 'skipped'){
+      statusBadge = `<span class="badge b-info">⊘ Skipped — won't send to any reel</span>`;
+    } else {
+      statusBadge = `<span class="badge b-warn">Needs review</span>`;
+    }
+    el.innerHTML = `
+      <div class="thumb" style="background:linear-gradient(135deg,${c.thumbColor},#000)">
+        <div class="detected">Detected #${c.detected}</div>
+        <div class="jersey">${c.thumbNum}</div>
+        <div class="time">0:06</div>
+      </div>
+      <div class="meta">
+        <h3>${c.title} ${statusBadge}</h3>
+        <div class="reason">${c.reason}</div>
+        <div class="conf">Model confidence: ${c.confidence}%
+          <div class="confbar"><div style="width:${c.confidence}%"></div></div>
+        </div>
+        ${c.status==='review' ? `
+          <div class="who">
+            ${c.options.map(o=>`<span class="pill p-alt">#${o.num} ${o.name?o.name.split(' ')[0]:''}</span>`).join('')}
+          </div>
+          <div class="actions">
+            ${c.options.filter(o=>o.num!==null).map((o,i)=>
+              `<button class="${i===0?'primary':''}" onclick="quickAssign(${c.id},${o.num})">That's #${o.num} ${o.name.split(' ')[0]}</button>`
+            ).join('')}
+            <button onclick="openPicker(${c.id})">Someone else…</button>
+            <button class="danger" onclick="skipClip(${c.id})">Not a highlight / skip</button>
+          </div>` :
+          `<div class="actions"><button onclick="resetClip(${c.id})">Change</button></div>`
+        }
+      </div>`;
+    list.appendChild(el);
+  });
+  renderRoster();
+  updateProgress();
+}
+
+function renderRoster(){
+  const r = document.getElementById('roster');
+  r.innerHTML = players.map(p=>{
+    const flagged = clips.some(c => c.status==='review' && c.options.some(o=>o.num===p.num));
+    return `<div class="roster-item">
+      <div class="num">${p.num}</div>
+      <div class="name">${p.name}${flagged?' <span class="badge b-warn" style="margin-left:6px">flag</span>':''}</div>
+      <div class="cnt">${p.clips} clip${p.clips===1?'':'s'}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateProgress(){
+  const total = clips.length;
+  const done = clips.filter(c=>c.status!=='review').length;
+  document.getElementById('s-fixed').textContent = clips.filter(c=>c.status==='confirmed').length;
+  document.getElementById('progBar').style.width = (done/total*100)+'%';
+  document.getElementById('progText').textContent = `${done} / ${total} reviewed`;
+  const btn = document.getElementById('sendBtn');
+  const msg = document.getElementById('readyMsg');
+  if(done===total){
+    btn.disabled = false;
+    msg.innerHTML = `<span style="color:var(--accent)">All set.</span> Personal reels will go to each family; the shared recap goes to everyone.`;
+  } else {
+    btn.disabled = true;
+    msg.textContent = `Finish reviewing the ${total-done} flagged clip${total-done===1?'':'s'} to unlock send.`;
+  }
+}
+
+function quickAssign(id,num){
+  const c = clips.find(x=>x.id===id);
+  c.status='confirmed'; c.assignedTo=num;
+  toast(`Assigned to #${num}`);
+  render();
+}
+function skipClip(id){
+  const c = clips.find(x=>x.id===id);
+  c.status='skipped';
+  toast("Skipped — won't appear in any reel");
+  render();
+}
+function resetClip(id){
+  const c = clips.find(x=>x.id===id);
+  c.status='review'; c.assignedTo=null;
+  render();
+}
+function openPicker(id){
+  pickTarget = id; pickNum = null;
+  const grid = document.getElementById('numGrid');
+  grid.innerHTML = players.map(p=>
+    `<button onclick="pick(${p.num},this)">#${p.num}<br><span style="font-size:11px;color:var(--muted);font-weight:400">${p.name.split(' ')[0]}</span></button>`
+  ).join('');
+  document.getElementById('modal').classList.add('open');
+}
+function pick(n,btn){
+  pickNum=n;
+  document.querySelectorAll('#numGrid button').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function confirmAssign(){
+  if(pickNum===null){toast("Pick a player first");return;}
+  quickAssign(pickTarget,pickNum);
+  closeModal();
+}
+function saveDraft(){toast("Draft saved");}
+function sendRecap(){
+  document.getElementById('conflictBox').innerHTML = "<b style='color:var(--accent)'>✓ Recap sent!</b> Personal reels delivered to 16 families. Notifications scheduled for 9:00 AM local time.";
+  document.querySelector('.final-card').innerHTML = "<h3 style='margin:0;color:var(--accent)'>✓ Weekly recap sent</h3><div style='color:var(--muted);font-size:14px;margin-top:6px'>Thank you for reviewing. Parents will get their reels in the morning. Your corrections are being fed back into the tagger to improve next week's auto-tags.</div>";
+  toast("Recap sent to 16 families");
+}
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+render();
+</script>
+</body>
+</html>

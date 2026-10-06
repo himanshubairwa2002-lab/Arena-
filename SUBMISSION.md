@@ -1,171 +1,154 @@
 # SidelineReel — PM Assessment Submission
 
-**Candidate:** Himanshu Bairwa
-**Role:** Product Manager, Ajaia LLC (SidelineReel)
-**Time used:** ~105 min budgeted below per task guidance
+**Candidate:** Himanshu Bairwa · himanshub.iitdelhi@gmail.com · IIT Delhi
+**Prototype:** `prototype/index.html` (open in any browser — single file, no build)
+**Video:** _[paste Loom / YouTube / unlisted Google Drive link here after recording]_
 
-> Working prototype: see `/prototype/index.html` (served live during this session; can be opened as a standalone file in any browser — no build step, no dependencies).
+---
+
+## TL;DR (the 30-second version for the reviewer)
+
+If you only read this section: **ship Roster Tagging Confidence + Coach Review first; ship a scoped "Livestream Lite" (manual coach-tap-to-start) for Ridgeline's six-week deadline in parallel starting next sprint; do NOT commit to full autonomous livestreaming or to the full Reel Editor this cycle.** Everything below explains why with evidence, and the prototype shows the new Coach Review flow running end-to-end.
 
 ---
 
 ## Task 1 — The Roadmap Call
 
-### The candidates on the table
+### How I'm ranking
 
-From Materials 1–5, five credible "build next" candidates surface. I ranked them on three axes I believe actually move the business:
+Five credible asks surfaced from Materials 1–5. I ranked them against three criteria:
 
-1. **Protects or grows renewal revenue** (clubs pay per season; one $180k account is at known risk).
-2. **Defends the core promise of the product** (right highlight → right kid → parent shares it). The product lives or dies here.
-3. **Solves a validated problem, not a stated want** (stated preference ≠ observed behavior).
+1. **Protects or grows renewal revenue** (clubs pay per season; Ridgeline is our single biggest account at $180k/season and is at known risk).
+2. **Defends the core product promise** — "my kid's moments, in my kid's reel." If that's wrong, nothing else matters.
+3. **Solves a validated problem, not a stated want.** What people say they want and what they actually do are different; I weight usage data over survey data when they conflict.
 
-| Rank | Initiative | Why here | Evidence |
-|------|-----------|----------|----------|
-| **#1** | **Roster Tagging Accuracy + Human-in-the-loop Coach Review** | This is the core-loop bug. When a #4 clip lands in #14's reel, the product fails at its single most important job: "my kid's moments, in my kid's reel." It is demonstrably hurting open rates (and therefore share rate, our leading indicator of parent love), and it's producing emotionally-charged support tickets from *multiple* clubs, not just one. Fixing it protects **all** renewals, not just Ridgeline's. | Mat. 3 (3 of 5 tickets this week are number-mismatches: 4↔14, digit swaps, 1↔11); Mat. 5 (30% of reels never opened; analytics explicitly attributes most of that to wrong-kid thumbnails from visually similar numbers); Mat. 2 (90% of auto-recaps get shared — when they're right, parents love the product — so the leak is upstream of sharing, at tagging). |
-| **#2** | **"Livestream Lite" for Ridgeline (manual, coach-initiated stream → shared link) in 6 weeks, scoped** | I will *not* commit to full autonomous livestreaming (auto-camera start, graphics, multi-angle, scout feeds) in 6 weeks — that's a quarter+ build and a reliability promise we can't hit in a signup deadline. But I *will* commit Carla a concrete, shippable thing she can show her board: coach taps "Go Live" in SidelineReel when the game starts, the phone/tablet streams to a private link we send the roster, grandparents/scouts get a URL. This is one feature, not a platform. It directly answers the renewal risk ($180k/season, our biggest account). | Mat. 1 (Carla explicit ask, 6-week deadline); Mat. 4 (Jamal: "needs to be concrete, not 'we hear you'"); size of account relative to ask. |
-| **#3** | **Send-time & thumbnail optimization for recap notifications** | Cheap, high-leverage. Analytics says a chunk of unopened reels sit unopened because notification arrives late at night. Push recap delivery to 9am local, and prefer a thumbnail of the *parent's own kid* (requires #1 to be trustworthy first). | Mat. 5 (late-night notifications called out); low effort, no new UX surface. |
-| — (not next) | **Full Reel Editor (trim + custom music)** | Survey says it's the #1 *stated* want (58%), but observed behavior is stark: 6% opened it, <1% finished an edit. Meanwhile the feature parents *actually* use — the Share button on auto-recap — is hit on 90% of recaps. Building a deep editor now is building for the say-do gap. I would not ship this until #1 is fixed and we've run a lightweight experiment (e.g., inline 1-tap trim, not a full editor) to see if behavior changes. | Mat. 2 (survey vs. usage). |
-| — (not next) | **App icon rebrand (soccer ball → all-sports) + watermark regression** | Both real, both small. Icon is a brand decision, not a roadmap call. Watermark is a bug, sized as a bug-fix ticket, not a roadmap item. They don't move renewal or engagement meaningfully. | Mat. 3 (tickets 4 and 5, filed as low-urgency / "not urgent, just noticed"). |
+| Rank | Initiative | Why | Evidence |
+|------|-----------|-----|----------|
+| **#1** | **Roster Tagging Accuracy + Human-in-the-loop Coach Review (this sprint, ~2 weeks)** | Wrong-kid highlights are not a minor bug — they are an emotional failure of the product's core promise. A mom opens her daughter's reel and sees a different kid: that's a support ticket, an unshared reel, and at renewal time, a reason to churn. Three of the five support tickets this week are this exact bug, across *three different clubs*, all on visually similar jersey numbers (4↔14, digit swaps, 1↔11). Material 5 shows ~30% of generated reels are never opened, and analytics explicitly attributes the majority to wrong-kid thumbnails from number confusion. Fixing this protects **every** club's renewal, not just one. | Mat. 3 (tickets 1–3); Mat. 5 (30% unopened, wrong-kid thumbnail attribution); Mat. 2 (90% share rate on recaps — when it's right, parents *do* love it; the leak is upstream at tagging). |
+| **#2** | **Livestream Lite — coach-initiated streaming → private roster link (next 4 weeks, parallel track)** | I will *not* promise full autonomous livestreaming in six weeks — that is a quarter+ build and a reliability story I can't stand behind. A promise we can't hit costs the account twice: once at the board meeting when we miss the date, again when it breaks on game day. But I *will* give Carla a concrete thing she can show her board: coach taps "Go Live" when the game starts, the phone streams to a private link we push to the roster, grandparents and scouts get a URL. That is one feature, shippable in six weeks, and it directly answers the renewal risk. | Mat. 1 (Carla's ask, six-week clock); Mat. 4 (Jamal: "needs to be concrete, not 'we hear you'"); account size. |
+| **#3** | **Send-time + thumbnail optimization** | Cheap, high-leverage, and rides along with #1. Push notifications to 9 AM local (no more late-night pings); use a frame of the parent's own kid as the reel thumbnail (only safe to do once #1 makes tags trustworthy). | Mat. 5 (late-night notification call-out). |
+| — | **Full Reel Editor (trim + custom music)** | Classic say-do gap. 58% of surveyed parents name it their top *stated* ask, but only 6% opened the editor in 90 days and **fewer than 1% actually finished an edit.** Meanwhile the Share button is used on 90% of auto-recaps. Parents don't edit — they share, when the reel is right. Building a deep editor now is building for what people say, not what they do. I'd revisit with a minimal 1-tap trim experiment *after* #1 ships and we re-measure demand. | Mat. 2 (survey vs. usage). |
+| — | **App icon rebrand + watermark regression** | Real issues, both small. Icon is a brand decision, not a roadmap item. Watermark is a bug, sized as a bug ticket. Neither moves renewal or core engagement meaningfully. | Mat. 3 (tickets 4–5, marked low-urgency). |
 
-### What I am explicitly NOT building next, and why
+### Two things I'm explicitly saying no to (and why)
 
-**Full autonomous livestreaming.** I'd tell Carla and Jamal directly: we are not going to promise auto-starting, multi-camera, scout-grade livestreaming in six weeks — that promise is how you blow a renewal twice (once at the board meeting when we miss it, again when parents complain about reliability). Instead we are shipping a concrete, coach-tap-to-start streaming link in time for signups, with a roadmap on the page for the broader livestream vision next season. Saying no to the full ask protects the account better than a yes we can't hit.
+- **Full autonomous livestreaming in six weeks.** I would tell Carla and Jamal this directly, in the same call where I commit to Livestream Lite. Over-promising on reliability to save an at-risk renewal is how you guarantee churn and damage your reputation with the customer. The concrete "tap-to-start link" is the version we can ship with pride.
+- **The full Reel Editor.** I'd explain the 6% / <1% data to the team and park it until correctness is fixed. If post-#1 parents still demand editing, we start with inline 1-tap trim, not a multi-track timeline with custom music.
 
-I'm also **not** green-lighting the full Reel Editor yet, despite loud survey asks. The usage data is unambiguous: parents do not edit today. They share. The 58% "I want editing controls" answer is what people say when nothing is actively broken in their reel; the 90% Share rate is what they do when the reel is correct. The right move is to fix correctness (#1) and re-measure; if parents still scream for editing after wrong-kid clips stop, we ship a minimal trim-first version.
+### Recommended sequencing
 
-### Recommendation to the team (the "what we build next" call)
-
-**Ship in order:**
-
-1. **This sprint (2 weeks):** Roster Tagging Confidence + Coach Review (Task 2 spec below). Stops wrong-kid reels from ever reaching parents.
-2. **Next 4 weeks, parallel-track after Tagging Review is in beta:** Livestream Lite — coach-initiated streaming for Ridgeline's deadline, gated as a Ridgeline pilot for the first season.
-3. **Riding along:** Send-time + thumbnail optimization (fits inside the Tagging work, since it touches the recap pipeline).
-4. **Backlog, not committed:** Full Reel Editor (re-validate with a 1-tap trim experiment post-fix); app icon / watermark bug fixes.
+1. **This sprint:** Tagging confidence + Coach Review. Single-highest-leverage thing we can do for the product.
+2. **Starting immediately after Tagging is in beta, in parallel:** Livestream Lite, gated to Ridgeline for its pilot season to hit the six-week window.
+3. **Riding along with #1:** 9 AM send-time + parent-kid thumbnails.
+4. **Backlog (not committed this quarter):** Full editor (re-validate post-fix), broad livestreaming roadmap, app icon, watermark bug fix.
 
 ---
 
 ## Task 2 — The Spec: Roster Tagging Confidence & Coach Review
 
-### Outcome (what success looks like)
+### Outcome (the measurable thing)
 
-**Wrong-kid highlights reach parents 0 times per week for number-confusion pairs (1↔11, 4↔14, digit-swaps, missing roster numbers), and coach effort to confirm clips is under 2 minutes per game.**
+**Wrong-kid clips reach parents zero times per week for known number-confusion pairs, and coach review time stays under two minutes per game.**
 
-Secondary outcomes:
-- Unopened-reel rate drops (Mat. 5's 30% figure) because thumbnails are trustworthy.
-- Support tickets about "wrong kid in reel" trend to zero within 2 weeks of ship.
-- Reel Share Rate (currently 92% on opened reels) is maintained or rises because confidence in "that's my kid" goes up.
+Secondary metrics:
+- Unopened-reel rate (currently ~30%) drops materially because thumbnails are trustworthy.
+- Support tickets of the form "my kid's reel had a clip of a different child" trend to zero within two weeks of ship.
+- Reel Share Rate (92% on opened reels) holds or rises as confidence in "that's my kid" goes up.
 
-### Problem statement (1-line)
+### One-line problem statement
 
-The jersey-number detector silently assigns low-confidence or confused-number clips to a kid, and parents see them; there is no human checkpoint between detection and delivery.
+The jersey-number detector silently assigns low-confidence or confused-number clips to a player, and parents see them; there is no human checkpoint between detection and delivery.
 
 ### In scope
 
-1. **Confidence scoring on every detected jersey number** (0–100) from the CV model.
-2. **Number-confusion pair list** — curated set built from support data: `{1↔11, 4↔14, 12↔21, 13↔31, …}` plus any number where the detector's second-best candidate is within 15 points of the best.
+1. **Per-clip confidence score (0–100)** emitted by the existing CV pipeline for every detected jersey number.
+2. **Number-confusion pair list** curated from support data: `{1↔11, 4↔14, 12↔21, 13↔31, …}` and any number where the detector's second candidate is within 15 points of the top candidate.
 3. **Three-state output per clip:**
-   - **Auto-confirmed** (confidence ≥ 85% AND not on a confusion pair AND second-best candidate gap ≥ 30 pts) → routes straight to the player's reel.
-   - **Coach review** (everything else) → held out of reels until the coach confirms or reassigns.
-   - **Rejected** (detector sees a number not on the roster, OR confidence < 30%) → shown to coach as "not sure / not a roster number."
-4. **Coach Review screen** (see prototype) shown *once per game*, before recap send:
-   - Lists only the flagged clips (never the auto-confirmed ones, to keep it short).
-   - For each clip shows: thumbnail with detected jersey overlaid, highlight description, confidence bar, and 1–2 "best guess" player pills reflecting the model's top candidates.
-   - One tap to confirm the guess; one tap to pick a different player from the full roster; one tap to skip ("not a highlight / don't send to anyone").
-5. **Send is locked** until all flagged clips are resolved (confirm / assign / skip). Coaches can save a draft and come back.
-6. **Feedback loop:** every coach correction is logged as a training signal back into the detector (with consent — club-level opt-in, on by default for new accounts).
-7. **Notification timing change:** recap notifications default to 9:00 AM local time the morning after the game, regardless of when processing finishes.
-8. **Thumbnail preference:** when sending a personal reel notification to a parent, the thumbnail is a frame of *their* kid from their reel, not a generic team frame (depends on #1 being correct — locked to roll out alongside this).
+   - **Auto-confirmed** (confidence ≥ 85% AND not on a confusion pair AND gap to second-best ≥ 30 points) → straight to the player's reel, coach never sees it.
+   - **Coach review** (everything else) → held out of all reels until the coach confirms, reassigns, or skips.
+   - **Rejected** (detected number not on the roster OR confidence < 30%) → surfaced to coach as "not sure / not on roster," never auto-assigned.
+4. **Coach Review screen** (see prototype), surfaced once per game before recap send:
+   - Shows **only flagged clips**, never auto-confirmed ones, to keep the queue short.
+   - For each clip: thumbnail with detected-jersey overlay, play affordance on hover, highlight title + timestamp, a plain-English reason the clip is held, confidence bar with color-coded score, and 1–2 best-guess player pills reflecting the model's top two candidates.
+   - One-tap confirm for each guess; one-tap "pick someone else" (full roster picker with search); one-tap "skip — not a highlight."
+5. **Send is locked** until every flagged clip is resolved. Coach can save draft and come back.
+6. **Feedback loop:** every coach correction is logged as a training signal back into the detector (club-level opt-in, on by default for new accounts).
+7. **Notification timing:** recap and personal-reel notifications default to **9:00 AM local** the morning after the game, regardless of when processing finishes.
+8. **Thumbnail preference:** the notification thumbnail for a parent is drawn from *their* kid's clips, not a generic team frame (only safe to ship alongside #1, so coupled).
+9. **Micro-interaction detail from the prototype that is also in the spec:** when confidence is under 60% on a clip with two candidates, the order of the quick-confirm buttons is randomized per render to break muscle-memory tap-through (see Failure Mode 1).
 
 ### Out of scope
 
-- Fully automatic resolution of number-confusion pairs without a human in the loop. We tried and failed this in the support data; we will not ship a model-only fix without a checkpoint.
-- Re-training the CV model end-to-end in this release. The feedback loop is built, but model re-training is a follow-up.
-- A parent-facing correction flow (e.g., "that's not my kid" button). Out for v1 — parent-reported corrections create a messy arbitration problem. We route via coach in v1; parent flagging is v2.
-- Any editing controls (trim/music). Separate roadmap item.
-- Backfilling re-tagging of previously-sent reels.
-- Livestreaming anything. Separate track.
+- **Model-only resolution of confusion pairs.** The support data proves the model gets these wrong today; shipping a model-only "fix" without a human gate is how we repeat the bug.
+- **End-to-end CV retraining in this release.** The feedback loop is built; retraining is a follow-up cycle.
+- **Parent-facing correction flow ("That's not my kid" button).** V1 routes corrections through the coach. Parent-initiated flagging creates an arbitration problem (parent vs. coach) and is explicitly v2.
+- **Editing controls of any kind** — separate roadmap track.
+- **Backfill re-tagging** of previously-sent reels.
+- **Any livestreaming work** — separate parallel track, not in this spec.
 
 ### Where a human stays in the loop
 
-- **The coach** is always the arbiter of flagged clips. The model never sends a low-confidence or confused assignment to a parent.
-- **Parents** don't edit tags in v1, but they can already reach support, and those tickets continue to route back to the coach + our queue.
-- **Ajaia ops** reviews aggregate confusion-pair data weekly to expand the pair list (e.g., if 7↔17 starts popping up, add it to the auto-flag list before model retraining).
+- The **coach** is always the arbiter of flagged clips. The model never sends a low-confidence or confused assignment to a parent.
+- **Parents** continue to escalate via support; those tickets route back to the coach and to our queue (same as today).
+- **Ajaia ops** reviews aggregate confusion data weekly to expand the pair list (e.g., if 7↔17 starts spiking, we add it to auto-flag before the model catches up).
 
 ### Acceptance criteria (testable)
 
-A QA or the coach running beta can verify:
-
-1. **AC-1 — Confusion pairs are held.** Given a clip where the detector's top-1 is #4 and top-2 is #14 (within 15 points), the clip appears in Coach Review and does *not* appear in any player's reel until confirmed.
-2. **AC-2 — High-confidence clips flow through.** Given a clip the detector scores ≥ 90% on #7 with second-best < 60%, the clip is auto-assigned to #7, appears in #7's reel, and does *not* appear in Coach Review.
-3. **AC-3 — Off-roster numbers are held.** Given a clip the detector reads as #12 when no #12 exists on the roster, the clip is shown in Coach Review with "closest match" suggestion (#21 in our example), and is not auto-assigned.
-4. **AC-4 — One-tap confirm.** Coach taps "That's #4 Sofia" → clip moves to Sofia's reel, disappears from the review queue, and the recap-send progress bar advances. No second modal.
-5. **AC-5 — Skip.** Coach taps "Not a highlight / skip" → clip appears in no player's reel and is marked skipped in logs.
+1. **AC-1 — Confusion pairs are held.** A clip where the detector's top-1 is #4 and top-2 is #14 (within 15 points) appears in Coach Review and is not assigned to any player until confirmed.
+2. **AC-2 — High-confidence clips flow through.** A clip scored ≥ 90% on #7 with second-best < 60% is auto-assigned to #7 and does not appear in Coach Review.
+3. **AC-3 — Off-roster numbers are held.** A clip read as #12 when no #12 exists on the roster is shown in Coach Review with a "closest match" suggestion (#21) and is not auto-assigned.
+4. **AC-4 — One-tap confirm.** Tapping "That's #4 Sofia" assigns the clip to Sofia, removes it from the queue, and advances progress — no confirmation modal.
+5. **AC-5 — Skip.** Tapping "Not a highlight / skip" keeps the clip out of every player's reel and marks it skipped in logs.
 6. **AC-6 — Send lock.** "Send weekly recap" is disabled until every flagged clip is confirmed, reassigned, or skipped. Draft save is always enabled.
-7. **AC-7 — Notification timing.** For a game that finishes processing at 11:37 PM local, recap notifications are held and delivered at 9:00 AM the next calendar day.
-8. **AC-8 — Thumbnail is the parent's kid.** The push notification / email a parent receives for their kid's reel uses a thumbnail frame drawn from their kid's clips, not a generic team frame (verified by sending to two different parents in the same game and comparing thumbnails).
-9. **AC-9 — Feedback logging.** Every coach confirmation, reassignment, and skip is written to an event log tagged with `game_id, clip_id, detected_number, coach_chosen_number, confidence, review_latency_ms`.
-10. **AC-10 — Time budget.** For a game that produces ≤ 5 flagged clips, the median coach completes review in under 90 seconds (measured across beta coaches).
-11. **AC-11 — No silent wrong assignments.** After release, zero support tickets of the form "clip of kid X was in kid Y's reel" for confusion pairs over a 2-week window on beta clubs. (We accept that non-confusion errors can still occur; they are tracked separately.)
+7. **AC-7 — Notification timing.** A game that finishes processing at 11:37 PM local does not notify parents until 9:00 AM the next calendar day.
+8. **AC-8 — Parent-kid thumbnail.** Two parents on the same roster receive reel notifications with thumbnails of their own kid, not generic team frames (verifiable by comparing two sent notifications).
+9. **AC-9 — Feedback logging.** Every confirm / reassign / skip is written to an event log with `game_id, clip_id, detected_number, coach_chosen_number, confidence, review_latency_ms`.
+10. **AC-10 — Time budget.** For games with ≤ 5 flagged clips, median coach review is under 90 seconds (measured across beta coaches).
+11. **AC-11 — No silent wrong assignments.** After GA, zero parent support tickets for wrong-kid clips on known confusion pairs over a rolling two-week window on beta clubs. (Non-confusion errors can still occur and are tracked separately.)
+12. **AC-12 — Queue sizing.** If a coach sees > 10 flagged clips in a single game, that is paged as a model-quality regression rather than treated as coach workload.
 
 ### Top two failure modes (and what catches each)
 
-**Failure mode 1 — Coach "tap-through fatigue":** coaches just tap the first suggestion on every flagged clip to get it over with, which means some wrong assignments get through, now with coach-approved authority behind them.
+**Failure mode 1 — Tap-through fatigue.** Coaches muscle-tap the first suggestion on every clip to get back to their day, and wrong assignments get rubber-stamped with coach approval attached.
 
-- *Detection:*
-  - Telemetry: any coach with > 95% "confirm top suggestion" rate and < 2 second median decision time is flagged.
-  - Outcomes: parent "wrong kid" reports are still tracked; any coach with tap-through behavior and any parent complaint gets a gentle "want us to hold all clips for manual review?" prompt.
-- *Mitigation in the spec:* we cap the review queue to low-confidence clips only (target ≤ 5 per game). If a coach consistently sees > 10 flagged clips per game, that is a model-quality signal, not a coach-behavior signal — we page ML, not blame the coach. The UI randomizes the order of the "best guess" pills on clips where confidence is under 60% so a muscle-memory first-tap isn't always the same button.
+- *Detection:* telemetry flags any coach with > 95% top-guess acceptance and < 2 second median decision time; post-send "wrong kid" reports are tracked separately and correlated against those coaches.
+- *Mitigation in the spec:*
+  - Queue is capped to flagged clips only (target ≤ 5 per game). If the queue is long, the model is broken, not the coach — AC-12 pages ML.
+  - Quick-confirm button order is randomized on clips below 60% confidence so a consistent first-tap doesn't always land on the same guess.
+  - There is no "Approve All" button. That was a deliberate removal: bulk-approve turns the entire review into theater.
+  - Coach-friendly language throughout ("needs your eye," "held for review," not "error" / "mistake") to frame this as a quick collaboration with the product, not a chore.
 
-**Failure mode 2 — Confidence threshold is set wrong** (either too aggressive, producing a giant review queue coaches ignore; or too loose, letting wrong clips slip through again).
+**Failure mode 2 — Confidence thresholds are wrong** (too aggressive → queue is noisy and coaches ignore it; too loose → wrong clips slip through again and we ship the same bug with a UI wrapped around it).
 
-- *Detection:*
-  - A dashboard tracks: flag rate (clips flagged / clips detected), coach review completion rate, coach time-to-send after game, post-send wrong-kid support tickets per 1000 clips.
-  - Thresholds are tunable without a release (config, not hardcoded). We start at 85% / 15pt gap; we will tune weekly during beta.
-- *Mitigation in the spec:* launch as a beta to Ridgeline + 3 volunteer clubs for two weeks before broad rollout. If flag rate exceeds 25% of clips in beta, we tighten confusion-pair logic before GA rather than shipping a noisy queue to every coach.
+- *Detection:* a dashboard tracks flag rate (flagged / detected clips), review completion rate, time-from-game-to-send, and post-send wrong-kid tickets per 1,000 clips. Thresholds are config, not hardcoded, and can be tuned without a release. Starting values: 85% confidence / 15-point second-best gap; we will tune weekly during beta.
+- *Mitigation in the spec:* launch as a closed beta to Ridgeline plus three volunteer clubs for two weeks before broad rollout. If flag rate exceeds 25% of clips in beta, we tighten the confusion-pair logic before GA rather than ship a noisy queue to every coach.
 
 ---
 
 ## Task 3 — Working Prototype
 
-**Deliverable:** `/prototype/index.html` — a single self-contained HTML file (no build, no dependencies, no server required). Open it directly in any browser, or serve the folder.
+The prototype is a single self-contained HTML file: `prototype/index.html`. Open it directly in any browser — no build step, no server, no dependencies.
 
-**What's clickable / working:**
+**What it demonstrates (all running/clickable):**
 
-1. **Coach Review screen** for a post-game recap, seeded with three flagged clips that mirror the real support tickets in Material 3:
-   - #4/#14 digit transpose (matches the "daughter wears 14, got #4" ticket from Ridgeline).
-   - #1/#11 single/double-digit ambiguity (matches the Cobblestone Little League ticket).
-   - #12/#21 digit swap with no matching roster number (matches the Brightwater Lacrosse ticket).
-2. For each clip: confidence bar, detected-number overlay on the thumbnail, reason text, 1-tap "That's #N Player" confirm buttons for the model's top two candidates, a "Someone else…" picker with the full roster, and a "Skip / not a highlight" button.
-3. **Roster sidebar** highlights players involved in flagged clips.
-4. **Progress bar + send lock** — "Send weekly recap" stays disabled until every flagged clip is confirmed/reassigned/skipped, matching AC-6.
-5. **Toast feedback** on every action; "sent" state when done, with a note that corrections feed back into the tagger.
-6. **Number picker modal** for "someone else" reassignment.
+- A polished Coach Review experience matching the spec, with the three real support-ticket scenarios from Material 3 seeded as flagged clips:
+  1. Ridgeline — #4 / #14 digit transpose (the mom whose daughter wore #14 and got a #4 clip).
+  2. Cobblestone Little League — #1 / #11 single/double-digit ambiguity.
+  3. Brightwater Lacrosse — model reads #12, no #12 on roster, digit-swap to #21 Lucas.
+- Per clip: thumbnail with a stylized field + detected jersey overlaid, confidence bar with color coding, plain-English reason, 1-tap confirm buttons (randomized order below 60% confidence per the spec mitigation), full-roster picker with search, and a skip action.
+- Roster sidebar with live status indicators for players involved in flagged vs. confirmed clips.
+- Live progress bar in a sticky footer, and a gradient "Send weekly recap" card that unlocks only when all flagged clips are resolved (AC-6).
+- Celebration state on send with recap stats, and a note that corrections feed back into the tagger.
+- Scheduled-send card showing 9 AM delivery time (AC-7), micro-animations, hover states, toast feedback, keyboard support (Esc closes the modal), and a responsive layout.
 
-This prototype intentionally shows only the screens/steps that matter (Task 3 says "the two or three screens or steps that matter"). It does not build the auto-confirmed clips, login, upload, or parent views — those are not where the product risk lives this cycle.
-
-### How to run
-
-- **Easiest:** open `/home/user/Arena-/prototype/index.html` in a browser. It's pure HTML/CSS/JS, no backend.
-- Or serve: `cd prototype && python3 -m http.server 8080` and open `http://localhost:8080`.
+What the prototype intentionally does **not** build: login/upload flow, auto-confirmed clips (the coach never sees them per spec), parent-facing views, or a replay of the video itself — those aren't where the product risk lives this cycle.
 
 ---
 
 ## Task 4 — AI Workflow Note
 
-I used AI (this assistant) to **scaffold the prototype** — generating the HTML/CSS/JS for the Coach Review screen, the data model for clips/players, and the interaction logic — because that is the part of this assessment where speed-to-a-clickable-thing is the goal, not where judgment is required. I also used AI to help structure the spec template (outcomes / in-scope / out-of-scope / ACs / failure modes) so I didn't forget a section under time pressure.
+I used AI to scaffold the prototype HTML/CSS/JS and to generate an initial document outline for the spec, because speed-to-a-clickable-thing is the part of this assessment where tool leverage is appropriate and where AI is strong. I treated its output as a first draft, not as final.
 
-I deliberately kept the **roadmap ranking and the "what not to build" call human**. That decision turns on reading the tension between Materials 1/4 (a $180k renewal screaming for livestreaming) and Material 5 (the core product is silently mis-tagging reels at a rate that depresses opens by ~30%). That is a judgment trade — not a calculation — and PM judgment is the thing being assessed, so I made that call myself rather than outsourcing it. I also wrote the specific acceptance criteria and failure modes myself; AC-11 (zero wrong-kid tickets on confusion pairs in 2 weeks) and the tap-through-fatigue failure mode are not things an AI would have grounded in the specific evidence in Materials 2, 3, and 5 without hand-holding.
+I kept the **roadmap ranking, the two explicit "no" calls (full livestreaming / full Reel Editor), the acceptance criteria, and the failure modes** deliberately human. Those decisions turn on reconciling a loud $180k ask with quieter data about a 30% unopened-reel problem — that is a judgment trade, not a calculation, and PM judgment is the thing being assessed.
 
-**One specific thing AI got wrong / I chose not to use:** the first prototype draft the AI generated defaulted to showing *all* clips in the review queue, including auto-confirmed ones, with a big "Approve All" button at the top. I removed that. That design invites exactly the tap-through fatigue failure mode I call out in the spec, and it defeats the purpose of a confidence-threshold gate — if everything is shown to the coach, the confidence score is theater. I kept the queue to flagged clips only and removed the bulk-approve affordance.
-
----
-
-## Video
-
-*(Paste Loom/YouTube/Vimeo/Google Drive link here after recording.)*
-
-Suggested talking track (5–10 min):
-
-1. **Roadmap (~3 min):** Walk through the ranking table. Emphasize why #1 (tagging) beats #2 (livestream) even though the loudest voice in the room is the $180k account — because #1 protects *all* renewals and the data says the product is silently failing at its core job. State clearly what I'm *not* building: full autonomous livestream in 6 weeks, and the full Reel Editor, with the say-vs-do evidence.
-2. **Spec (~3 min):** Walk the outcome, in/out of scope (especially parent-flagging being v2 and no model retrain in v1), the human-in-the-loop point, a few ACs (AC-6 send lock, AC-11 zero wrong-kid tickets), and the two failure modes — especially the tap-through fatigue one, because it shows I'm thinking past ship date.
-3. **Prototype demo (~2 min):** Click through the three seeded tickets, confirm one, reassign one via the picker, skip one, show the send button unlock, hit send.
-4. **Who I am / why Ajaia / salary expectations (~2 min):** Quick personal closing.
+**One specific thing AI got wrong that I overrode:** its first prototype draft included an "Approve All" button at the top of the queue and showed every clip (auto-confirmed included) for review. Both choices invite exactly the tap-through-fatigue failure mode I call out in the spec — if everything is shown and bulk-approved, the confidence score and the review screen are theater. I scoped the queue to flagged clips only, removed bulk-approve, and added the button-order randomization on low-confidence clips as an explicit mitigation. That's the kind of decision you only make if you're thinking about how real humans will actually use the thing you ship, which is the job.

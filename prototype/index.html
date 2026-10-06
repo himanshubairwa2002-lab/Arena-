@@ -3,155 +3,390 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SidelineReel — Roster Tagging Review (Coach Preview)</title>
+<title>SidelineReel — Weekly Recap Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0e1116; --panel:#161b22; --panel2:#1c232d; --line:#262d38;
-    --text:#e6edf3; --muted:#8b949e; --accent:#3fb950; --warn:#d29922;
-    --bad:#f85149; --blue:#58a6ff;
+    --ink:#0a0f1e;
+    --ink2:#1a2237;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --bg:#f7f8fb;
+    --card:#ffffff;
+    --green:#0ea371;
+    --green-soft:#e7f7f1;
+    --amber:#d97706;
+    --amber-soft:#fef3c7;
+    --red:#dc2626;
+    --red-soft:#fee2e2;
+    --blue:#2563eb;
+    --blue-soft:#dbeafe;
+    --brand:#0057ff;
+    --brand2:#00c2ff;
+    --shadow:0 1px 2px rgba(10,15,30,.04),0 8px 24px rgba(10,15,30,.06);
+    --shadow-lg:0 4px 12px rgba(10,15,30,.08),0 20px 48px rgba(10,15,30,.12);
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-       background:var(--bg);color:var(--text);}
-  header{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 24px;
-         display:flex;align-items:center;justify-content:space-between;}
-  .logo{font-weight:700;font-size:18px;letter-spacing:.3px}
-  .logo span{color:var(--accent)}
-  .crumbs{color:var(--muted);font-size:13px}
-  main{max-width:1200px;margin:0 auto;padding:24px;}
-  .hrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
-  h1{font-size:22px;margin:0}
-  .sub{color:var(--muted);font-size:14px;margin-top:4px}
-  .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
-  .b-warn{background:rgba(210,153,34,.15);color:var(--warn)}
-  .b-ok{background:rgba(63,185,80,.15);color:var(--accent)}
-  .b-bad{background:rgba(248,81,73,.15);color:var(--bad)}
-  .b-info{background:rgba(88,166,255,.15);color:var(--blue)}
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
-  .stat .n{font-size:22px;font-weight:700}
-  .stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
-  .layout{display:grid;grid-template-columns:1fr 360px;gap:20px}
-  @media (max-width:960px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
-  .clip{display:flex;gap:14px;padding:14px;border:1px solid var(--line);border-radius:10px;
-        background:var(--panel2);margin-bottom:12px;align-items:flex-start}
-  .thumb{width:180px;height:110px;border-radius:8px;background:#000;flex-shrink:0;
-         position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-  .thumb .jersey{font-size:48px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-  .thumb .detected{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.7);
-                   color:var(--warn);font-size:11px;font-weight:700;padding:3px 6px;border-radius:4px;
-                   border:1px solid var(--warn)}
-  .thumb .time{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.7);
-               color:#fff;font-size:11px;padding:2px 6px;border-radius:3px}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;
+    padding-bottom:88px;
+  }
+  /* Top nav */
+  .nav{
+    background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;
+  }
+  .nav-in{max-width:1240px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:24px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:-.2px}
+  .logo-mark{
+    width:32px;height:32px;border-radius:9px;
+    background:linear-gradient(135deg,var(--brand),var(--brand2));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;
+    box-shadow:0 4px 12px rgba(0,87,255,.35);
+  }
+  .logo-mark svg{width:18px;height:18px}
+  .nav-tabs{display:flex;gap:4px;margin-left:12px}
+  .nav-tab{padding:8px 14px;border-radius:8px;font-size:13.5px;color:var(--muted);font-weight:500;cursor:pointer}
+  .nav-tab.active{background:var(--blue-soft);color:var(--blue);font-weight:600}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .coach-chip{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--bg);font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);
+          color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+  /* Hero */
+  .hero{
+    background:
+      radial-gradient(1200px 400px at 10% -10%,rgba(0,87,255,.10),transparent 60%),
+      radial-gradient(900px 400px at 110% 0%,rgba(0,194,255,.10),transparent 60%),
+      #fff;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-in{max-width:1240px;margin:0 auto;padding:32px 28px 28px}
+  .crumbs{font-size:13px;color:var(--muted);margin-bottom:10px;display:flex;gap:8px;align-items:center}
+  .crumbs .sep{color:#cbd5e1}
+  .hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  h1{font-size:28px;margin:0 0 6px;font-weight:800;letter-spacing:-.5px;line-height:1.2}
+  .hero-sub{color:var(--muted);font-size:14.5px;max-width:640px;line-height:1.55}
+  .hero-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-size:12.5px;font-weight:600}
+  .b-amber{background:var(--amber-soft);color:var(--amber)}
+  .b-green{background:var(--green-soft);color:var(--green)}
+  .b-blue{background:var(--blue-soft);color:var(--blue)}
+  .b-red{background:var(--red-soft);color:var(--red)}
+  .b-ink{background:#f1f5f9;color:#334155}
+  .hero-card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+    box-shadow:var(--shadow);min-width:280px;
+  }
+  .hero-card .label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:8px}
+  .hero-card .val{display:flex;align-items:baseline;gap:8px}
+  .hero-card .big{font-size:30px;font-weight:800;letter-spacing:-.6px}
+  .hero-card .big.warn{color:var(--amber)}
+  .hero-card .small{font-size:13px;color:var(--muted)}
+  /* Layout */
+  main{max-width:1240px;margin:0 auto;padding:24px 28px 40px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);
+        display:flex;flex-direction:column;gap:4px;transition:transform .15s}
+  .stat:hover{transform:translateY(-1px)}
+  .stat .n{font-size:26px;font-weight:800;letter-spacing:-.4px}
+  .stat .n.warn{color:var(--amber)}
+  .stat .n.ok{color:var(--green)}
+  .stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+  .stat .sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .layout{display:grid;grid-template-columns:1fr 350px;gap:22px}
+  @media (max-width:1024px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:15px;margin:0 0 12px;display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:-.2px}
+  /* Callout */
+  .callout{
+    background:linear-gradient(180deg,#fffbeb,#fff);
+    border:1px solid #fde68a;border-radius:12px;padding:14px 16px;margin-bottom:18px;
+    display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.55;
+  }
+  .callout .icon{width:28px;height:28px;border-radius:8px;background:var(--amber-soft);color:var(--amber);
+                 display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800}
+  .callout b{color:#92400e}
+  /* Clip card */
+  .clip{
+    display:flex;gap:16px;padding:18px;border:1px solid var(--line);border-radius:14px;
+    background:#fff;margin-bottom:14px;align-items:flex-start;
+    transition:box-shadow .2s,transform .15s;
+    animation:fadeIn .35s ease both;
+  }
+  .clip:hover{box-shadow:var(--shadow-lg)}
+  .clip.resolved{border-color:#bbf7d0;background:linear-gradient(180deg,#f0fdf4,#fff)}
+  .clip.skipped{border-color:#e2e8f0;background:linear-gradient(180deg,#f8fafc,#fff);opacity:.72}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .thumb{
+    width:220px;aspect-ratio:16/10;border-radius:10px;background:#0b1220;
+    flex-shrink:0;position:relative;overflow:hidden;display:flex;align-items:center;
+    justify-content:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+  }
+  .thumb::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.10),transparent 50%);
+  }
+  .thumb .field{
+    position:absolute;inset:0;
+    background:
+      linear-gradient(180deg,#1e3a8a 0%,#065f46 55%,#047857 100%);
+  }
+  .thumb .field::before{
+    content:"";position:absolute;inset:45% 0 0 0;border-top:2px solid rgba(255,255,255,.18);
+  }
+  .thumb .field::after{
+    content:"";position:absolute;left:50%;top:45%;width:40%;height:55%;transform:translateX(-50%);
+    border:2px solid rgba(255,255,255,.2);border-top:0;border-radius:0 0 50% 50%/0 0 30% 30%;
+  }
+  .thumb .jersey{
+    position:relative;z-index:2;font-size:54px;font-weight:900;color:#fff;
+    text-shadow:0 4px 18px rgba(0,0,0,.6);font-family:'Inter',sans-serif;
+  }
+  .thumb .detected{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);
+                   color:#fbbf24;font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;z-index:3;
+                   letter-spacing:.3px;border:1px solid rgba(251,191,36,.35)}
+  .thumb .time{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;
+               padding:3px 7px;border-radius:5px;z-index:3;font-weight:600}
+  .thumb .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;opacity:0;transition:.2s}
+  .thumb .play-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.95);
+                   display:flex;align-items:center;justify-content:center;color:#0a0f1e;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+  .clip:hover .thumb .play{opacity:1}
   .meta{flex:1;min-width:0}
-  .clip h3{margin:0 0 4px;font-size:15px}
-  .who{display:flex;align-items:center;gap:10px;margin:6px 0 8px;flex-wrap:wrap}
-  .pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;
-        font-size:13px;font-weight:600}
-  .p-current{background:rgba(210,153,34,.18);color:var(--warn);border:1px solid var(--warn)}
-  .p-alt{background:rgba(88,166,255,.1);color:var(--blue);border:1px solid var(--blue)}
-  .reason{font-size:12.5px;color:var(--muted);margin-bottom:8px}
-  .conf{font-size:12px;color:var(--muted);margin-bottom:10px}
-  .confbar{height:6px;background:#2a313c;border-radius:3px;overflow:hidden;margin-top:4px}
-  .confbar > div{height:100%;background:linear-gradient(90deg,var(--bad),var(--warn),var(--accent))}
+  .meta-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+  .meta h3{margin:0;font-size:16px;font-weight:700;letter-spacing:-.2px}
+  .moment{display:inline-block;font-size:12.5px;color:var(--muted);margin-top:2px}
+  .who{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-size:12.5px;font-weight:600}
+  .p-assigned{background:var(--green-soft);color:var(--green)}
+  .p-skipped{background:#f1f5f9;color:#475569}
+  .p-guess{background:var(--blue-soft);color:var(--blue);border:1px solid #bfdbfe}
+  .reason{font-size:13px;color:#475569;margin-bottom:10px;line-height:1.5}
+  .conf{font-size:12px;color:var(--muted);margin-bottom:12px}
+  .confbar{height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden;margin-top:6px}
+  .confbar > div{height:100%;background:linear-gradient(90deg,var(--red),var(--amber),var(--green));border-radius:3px;transition:width .4s ease}
   .actions{display:flex;gap:8px;flex-wrap:wrap}
-  button{font-family:inherit;font-size:13px;font-weight:600;border-radius:8px;border:1px solid var(--line);
-         padding:8px 14px;cursor:pointer;background:var(--panel);color:var(--text);transition:.12s}
-  button:hover{border-color:var(--blue)}
-  button.primary{background:var(--accent);border-color:var(--accent);color:#0b100b}
-  button.primary:hover{filter:brightness(1.1)}
-  button.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
-  button.danger:hover{background:rgba(248,81,73,.1)}
-  button.ghost{background:transparent}
-  .sidebar h3{margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
-  .roster-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;
-               background:var(--panel2);margin-bottom:8px}
-  .roster-item .num{width:32px;height:32px;border-radius:50%;background:#2a313c;display:flex;
-                    align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
-  .roster-item .name{flex:1;font-size:14px}
-  .roster-item .cnt{font-size:12px;color:var(--muted)}
-  .footer-bar{position:sticky;bottom:0;background:var(--panel);border-top:1px solid var(--line);
-              padding:14px 24px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .progress{flex:1;height:8px;background:#2a313c;border-radius:4px;overflow:hidden;margin:0 16px;max-width:400px}
-  .progress > div{height:100%;background:var(--accent);transition:width .3s}
-  .toast{position:fixed;top:20px;right:20px;background:var(--accent);color:#0b100b;
-         padding:12px 18px;border-radius:10px;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.4);
-         transform:translateX(400px);transition:.3s;z-index:50}
+  button{font-family:inherit;font-size:13.5px;font-weight:600;border-radius:9px;
+         padding:9px 15px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);
+         transition:all .12s;display:inline-flex;align-items:center;gap:6px}
+  button:hover{border-color:#cbd5e1;background:#f8fafc}
+  button:active{transform:translateY(1px)}
+  button.primary{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(0,87,255,.25)}
+  button.primary:hover{background:#0047d6;border-color:#0047d6;filter:brightness(1.05)}
+  button.primary:disabled{background:#cbd5e1;border-color:#cbd5e1;color:#fff;box-shadow:none;cursor:not-allowed;transform:none}
+  button.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+  button.ghost:hover{background:#f1f5f9;color:var(--ink)}
+  button.danger{background:#fff;border-color:#fecaca;color:var(--red)}
+  button.danger:hover{background:var(--red-soft)}
+  button.secondary{background:#fff}
+  /* Sidebar */
+  .sidebar > *{margin-bottom:16px}
+  .sidebar > *:last-child{margin-bottom:0}
+  .roster-list{display:flex;flex-direction:column;gap:6px}
+  .roster-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:#f8fafc;transition:.15s}
+  .roster-item:hover{background:#f1f5f9}
+  .roster-item.flagged{background:var(--amber-soft);border:1px solid #fde68a}
+  .roster-item.fixed{background:var(--green-soft);border:1px solid #bbf7d0}
+  .roster-item .num{width:30px;height:30px;border-radius:8px;background:#fff;border:1px solid var(--line);display:flex;
+                    align-items:center;justify-content:center;font-weight:700;font-size:12.5px;flex-shrink:0;font-feature-settings:"tnum"}
+  .roster-item .name{flex:1;font-size:13.5px;font-weight:500}
+  .roster-item .cnt{font-size:11.5px;color:var(--muted);font-weight:600}
+  .insights li{font-size:13px;color:#475569;line-height:1.6;margin-bottom:6px}
+  .insights li b{color:var(--ink)}
+  /* Final send card */
+  .send-card{background:linear-gradient(135deg,#0057ff 0%,#009dff 100%);color:#fff;border:0;margin-top:22px;padding:22px 24px;position:relative;overflow:hidden}
+  .send-card::before{
+    content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;
+    background:rgba(255,255,255,.08);
+  }
+  .send-card::after{
+    content:"";position:absolute;right:20px;bottom:-60px;width:140px;height:140px;border-radius:50%;
+    background:rgba(255,255,255,.06);
+  }
+  .send-card h3{color:#fff;font-size:17px;margin:0 0 6px;position:relative;z-index:1}
+  .send-card .msg{color:rgba(255,255,255,.85);font-size:13.5px;margin-bottom:14px;max-width:620px;line-height:1.5;position:relative;z-index:1}
+  .send-card .actions{position:relative;z-index:1}
+  .send-card button.primary{background:#fff;color:var(--brand);border-color:#fff;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+  .send-card button.primary:hover{background:#f1f5f9}
+  .send-card button.primary:disabled{background:rgba(255,255,255,.3);color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.3)}
+  .send-card button.ghost{color:#fff;border-color:transparent}
+  .send-card button.ghost:hover{background:rgba(255,255,255,.15);color:#fff}
+  /* Footer bar */
+  .footer-bar{
+    position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);
+    padding:12px 28px;z-index:25;display:flex;align-items:center;gap:16px;
+    box-shadow:0 -4px 20px rgba(10,15,30,.05);
+  }
+  .footer-in{max-width:1240px;width:100%;margin:0 auto;display:flex;align-items:center;gap:16px}
+  .progress{flex:1;height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden}
+  .progress > div{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:4px;transition:width .4s cubic-bezier(.4,0,.2,1);width:0%}
+  .prog-text{font-size:13px;font-weight:600;min-width:130px;text-align:right;font-feature-settings:"tnum"}
+  .prog-text .prog-done{color:var(--green)}
+  /* Toast */
+  .toast{position:fixed;top:80px;right:24px;background:#0f172a;color:#fff;padding:12px 18px;border-radius:10px;
+         font-weight:600;font-size:13.5px;box-shadow:var(--shadow-lg);z-index:50;display:flex;align-items:center;gap:10px;
+         transform:translateX(420px);transition:transform .35s cubic-bezier(.4,0,.2,1)}
   .toast.show{transform:translateX(0)}
-  .empty{text-align:center;padding:60px 20px;color:var(--muted)}
-  .empty h2{color:var(--text);margin:0 0 8px}
-  .conflicts{background:rgba(210,153,34,.08);border:1px solid var(--warn);border-radius:10px;padding:12px;margin-bottom:16px;font-size:13px}
-  .conflicts b{color:var(--warn)}
-  .final-card{border:1px solid var(--accent)}
-  .send-btn{background:var(--accent);color:#0b100b;border-color:var(--accent);padding:10px 20px}
-  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;
-            justify-content:center;z-index:40;padding:20px}
+  .toast .check{width:22px;height:22px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+  /* Modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(10,15,30,.5);backdrop-filter:blur(4px);display:none;align-items:center;
+            justify-content:center;z-index:40;padding:20px;animation:fadeBg .2s}
   .modal-bg.open{display:flex}
-  .modal{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;max-width:520px;width:100%}
-  .modal h2{margin-top:0}
-  .num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0}
-  .num-grid button{padding:12px 0;font-size:16px}
-  .num-grid button.sel{background:var(--blue);border-color:var(--blue);color:#fff}
-  .step{display:none}
-  .step.active{display:block}
-  .tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--line);padding-bottom:0}
-  .tab{padding:10px 16px;cursor:pointer;font-size:14px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
-  .tab.active{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+  @keyframes fadeBg{from{opacity:0}to{opacity:1}}
+  .modal{background:#fff;border-radius:16px;padding:24px;max-width:540px;width:100%;box-shadow:var(--shadow-lg);animation:pop .25s cubic-bezier(.4,0,.2,1)}
+  @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+  .modal h2{margin:0 0 4px;font-size:18px;font-weight:700;letter-spacing:-.2px}
+  .modal .muted{color:var(--muted);font-size:13.5px;margin-bottom:8px}
+  .search{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font-family:inherit;font-size:14px;margin:8px 0 14px;outline:none}
+  .search:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,87,255,.15)}
+  .num-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 18px;max-height:300px;overflow-y:auto;padding-right:4px}
+  .num-grid button{justify-content:flex-start;padding:10px 12px;font-weight:500}
+  .num-grid button .n{font-weight:700;width:28px;color:var(--brand);font-feature-settings:"tnum"}
+  .num-grid button:hover{border-color:var(--brand);background:var(--blue-soft)}
+  .num-grid button.sel{background:var(--brand);border-color:var(--brand);color:#fff}
+  .num-grid button.sel .n{color:#fff}
+  .modal-foot{display:flex;gap:8px;justify-content:flex-end}
+  /* Success empty state */
+  .done{text-align:center;padding:50px 20px}
+  .done .check-big{width:64px;height:64px;border-radius:50%;background:var(--green-soft);color:var(--green);
+                   display:inline-flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:16px;
+                   animation:pop .4s cubic-bezier(.4,0,.2,1)}
+  .done h2{margin:0 0 6px;font-size:22px;font-weight:800;letter-spacing:-.3px}
+  .done p{color:var(--muted);font-size:14px;max-width:440px;margin:8px auto 0;line-height:1.6}
+  .done-stats{display:flex;justify-content:center;gap:24px;margin-top:22px;flex-wrap:wrap}
+  .done-stats .ds{text-align:center}
+  .done-stats .ds .n{font-size:22px;font-weight:800;color:var(--green);font-feature-settings:"tnum"}
+  .done-stats .ds .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:2px}
+  /* Pulse dot */
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--amber);position:relative;display:inline-block}
+  .pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--amber);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.8);opacity:0}}
+  .pulse.green{background:var(--green)}
+  .pulse.green::after{border-color:var(--green)}
+  /* Scrollbar polish */
+  .num-grid::-webkit-scrollbar{width:6px}
+  .num-grid::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo"><span>●</span> SidelineReel <span style="color:var(--muted);font-weight:400;font-size:13px">Coach Console</span></div>
-  <div class="crumbs">Ridgeline U14 Raptors · Game vs. Westside · Sat Oct 4</div>
-</header>
+<div class="nav">
+  <div class="nav-in">
+    <div class="brand">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+      </div>
+      SidelineReel
+      <span style="font-size:11px;font-weight:600;color:var(--muted);background:var(--bg);padding:3px 8px;border-radius:6px;margin-left:4px">COACH</span>
+    </div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Dashboard</div>
+      <div class="nav-tab">Teams</div>
+      <div class="nav-tab active">Recaps</div>
+      <div class="nav-tab">Roster</div>
+      <div class="nav-tab">Settings</div>
+    </div>
+    <div class="nav-right">
+      <button class="ghost" style="padding:6px 10px;font-size:18px">🔔</button>
+      <div class="coach-chip">
+        <div class="avatar">CR</div>
+        <div>
+          <div style="font-size:12.5px;font-weight:600;line-height:1.2">Carla Reyes</div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.2">Ridgeline U14 Raptors</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="crumbs">
+      <span>Recaps</span><span class="sep">›</span>
+      <span>U14 Raptors</span><span class="sep">›</span>
+      <span style="color:var(--ink);font-weight:500">Game vs. Westside FC · Sat Oct 4</span>
+    </div>
+    <div class="hero-row">
+      <div>
+        <h1>Your weekly recap is ready to review <span class="pulse" style="margin-left:6px;vertical-align:middle"></span></h1>
+        <div class="hero-sub">
+          SidelineReel found <b>19 highlights</b> and stitched personal reels for all 16 families.
+          Three clips need a quick confirmation before we send — the model wasn't confident on similar-looking jersey numbers (1 vs 11, 4 vs 14). Takes under a minute.
+        </div>
+        <div class="hero-badges">
+          <span class="badge b-amber"><span class="pulse"></span>3 clips need your eye</span>
+          <span class="badge b-green">✓ 16 auto-confirmed</span>
+          <span class="badge b-blue">🎯 16 families on roster</span>
+          <span class="badge b-ink">⏱ Estimated review: ~60 seconds</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="label">Scheduled send</div>
+        <div class="val">
+          <div class="big warn">9:00 AM</div>
+          <div class="small">Sun Oct 5 · local time</div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5">
+          Notifications held overnight so parents don't get woken up.
+          You can edit or delay any time before send.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <main>
-  <div class="hrow">
-    <div>
-      <h1>Review &amp; Send Weekly Recap <span class="badge b-warn">3 clips need your eye</span></h1>
-      <div class="sub">SidelineReel auto-tagged 19 highlights. 3 fell below confidence or hit a known number-confusion pair. Quick glance before it goes to parents.</div>
-    </div>
-    <div>
-      <span class="badge b-info">Coach review · Est. 90 seconds</span>
-    </div>
-  </div>
-
   <div class="stats">
-    <div class="stat"><div class="n" id="s-total">19</div><div class="l">Highlights detected</div></div>
-    <div class="stat"><div class="n" style="color:var(--warn)" id="s-review">3</div><div class="l">Need review</div></div>
-    <div class="stat"><div class="n" style="color:var(--accent)" id="s-auto">16</div><div class="l">Auto-confirmed</div></div>
-    <div class="stat"><div class="n" style="color:var(--muted)" id="s-fixed">0</div><div class="l">Fixed by you</div></div>
+    <div class="stat"><div class="n">19</div><div class="l">Highlights detected</div><div class="sub">Goals, saves, big plays</div></div>
+    <div class="stat"><div class="n warn" id="s-review">3</div><div class="l">Need review</div><div class="sub">Similar jersey numbers</div></div>
+    <div class="stat"><div class="n ok" id="s-auto">16</div><div class="l">Auto-confirmed</div><div class="sub">≥85% confidence</div></div>
+    <div class="stat"><div class="n" id="s-fixed" style="color:var(--muted)">0</div><div class="l">Corrected by you</div><div class="sub">Helps the model learn</div></div>
   </div>
 
-  <div class="conflicts" id="conflictBox">
-    <b>⚠ Why you're seeing this:</b> These clips have jersey numbers the model sometimes misreads (e.g. 1 vs 11, 4 vs 14, digit-swaps), were partially occluded, or fell under 85% confidence. Tap confirm, pick the right player, or skip.
+  <div class="callout" id="conflictBox">
+    <div class="icon">!</div>
+    <div>
+      <b>Why these clips are held:</b> SidelineReel flags clips where jersey numbers are easy to misread
+      (digit swaps like 1↔11 or 4↔14, partially blocked numbers, or low confidence). We never send a
+      low-confidence clip to a kid's reel without your okay. Your corrections help us get better next game.
+    </div>
   </div>
 
   <div class="layout">
-    <div>
-      <div class="card" id="clipList"></div>
+    <div id="mainCol">
+      <div class="card" style="padding:0;overflow:hidden;border:0;background:transparent;box-shadow:none">
+        <div id="clipList"></div>
+      </div>
 
-      <div class="card final-card" style="margin-top:20px">
-        <h3 style="margin:0 0 8px">Ready to send?</h3>
-        <div style="color:var(--muted);font-size:14px;margin-bottom:14px" id="readyMsg">Finish reviewing the flagged clips to unlock send.</div>
-        <button class="send-btn" id="sendBtn" disabled onclick="sendRecap()">Send weekly recap to 16 families</button>
-        <button class="ghost" style="margin-left:8px" onclick="saveDraft()">Save draft &amp; finish later</button>
+      <div class="card send-card" id="sendCard">
+        <h3 id="sendTitle">Review 3 clips before sending</h3>
+        <div class="msg" id="sendMsg">Once you confirm the flagged clips, we'll send the weekly recap to all 16 families on the roster. Each family gets their kid's personal reel + the team recap.</div>
+        <div class="actions">
+          <button class="primary" id="sendBtn" onclick="sendRecap()" disabled>
+            Send weekly recap
+            <span style="opacity:.8;font-weight:500">→</span>
+          </button>
+          <button class="ghost" onclick="saveDraft()">Save draft & finish later</button>
+        </div>
       </div>
     </div>
 
     <aside class="sidebar">
-      <div class="card" style="margin-bottom:16px">
-        <h3>Roster</h3>
-        <div id="roster"></div>
+      <div class="card">
+        <h2>👥 Roster <span style="font-weight:500;color:var(--muted);font-size:13px;margin-left:auto">U14 Raptors</span></h2>
+        <div class="roster-list" id="roster"></div>
       </div>
       <div class="card">
-        <h3>What got fixed this week</h3>
-        <ul style="margin:0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.7">
-          <li>Number-confusion pairs (1↔11, 4↔14, 12↔21 …) route to coach review by default.</li>
-          <li>Clips stay in "coach review" until confirmed — never silently assigned.</li>
-          <li>Parents see their reel the morning after the game, not late at night.</li>
+        <h2>💡 What's new this week</h2>
+        <ul class="insights" style="margin:0;padding-left:18px">
+          <li><b>Confusion pairs (1↔11, 4↔14, 12↔21, …)</b> now route to coach review instead of auto-assigning.</li>
+          <li><b>No more late-night notifications.</b> Recaps deliver at 9 AM local.</li>
+          <li><b>Parent thumbnail = their kid,</b> not a generic team shot — fewer unopened reels.</li>
+          <li><b>Your corrections train the tagger</b> (opt-in, on by default for your club).</li>
         </ul>
       </div>
     </aside>
@@ -159,27 +394,29 @@
 </main>
 
 <div class="footer-bar">
-  <div style="font-size:13px;color:var(--muted)">Review progress</div>
-  <div class="progress"><div id="progBar" style="width:0%"></div></div>
-  <div style="font-size:13px" id="progText">0 / 3 reviewed</div>
+  <div class="footer-in">
+    <span style="font-size:13px;color:var(--muted);font-weight:500">Review progress</span>
+    <div class="progress"><div id="progBar"></div></div>
+    <div class="prog-text" id="progText"><span style="color:var(--muted)">0 of 3 reviewed</span></div>
+  </div>
 </div>
 
-<div class="toast" id="toast">Saved.</div>
+<div class="toast" id="toast"><span class="check">✓</span><span id="toastText">Saved</span></div>
 
 <div class="modal-bg" id="modal">
   <div class="modal">
-    <h2>Assign clip to player</h2>
-    <div style="color:var(--muted);font-size:14px" id="modalSub">Pick the player this highlight belongs to.</div>
+    <h2>Assign this highlight to a player</h2>
+    <div class="muted">Pick the player this clip belongs to. It'll go straight into their personal reel.</div>
+    <input class="search" id="playerSearch" placeholder="Search by name or number…" oninput="renderPicker()" />
     <div class="num-grid" id="numGrid"></div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
+    <div class="modal-foot">
       <button class="ghost" onclick="closeModal()">Cancel</button>
-      <button class="primary" onclick="confirmAssign()">Assign</button>
+      <button class="primary" onclick="confirmAssign()">Assign highlight</button>
     </div>
   </div>
 </div>
 
 <script>
-// ---- Seed data based on real support tickets from the assessment ----
 const players = [
   {num:1,  name:"Liam Okafor",      clips:2},
   {num:4,  name:"Sofia Alvarez",    clips:1},
@@ -193,92 +430,141 @@ const players = [
   {num:23, name:"Isabella Garcia",  clips:1},
 ];
 
-// The three flagged clips — each mirrors a real support ticket scenario
 const clips = [
   {
-    id:1, jersey:4,  detected:14,
-    title:"Goal-line save, 2nd half, 48:12",
-    reason:"Detected #14 but jersey looks digit-transposed. Likely confusion pair 4↔14.",
+    id:1, detected:14, actual:4,
+    title:"Goal-line save",
+    moment:"2nd half · 48:12",
+    reason:"Model read #14 but frame analysis suggests digit transpose. This is a known confusion pair (4↔14). Clip is held until you confirm.",
     confidence:42,
-    thumbColor:"#1f3b5c", options:[{num:14,name:"Amara Reyes"},{num:4,name:"Sofia Alvarez"}],
-    status:"review", assignedTo:null, thumbNum:"14?"
+    gradient:"linear-gradient(135deg,#f59e0b,#ef4444)",
+    options:[{num:14,name:"Amara Reyes"},{num:4,name:"Sofia Alvarez"}],
+    status:"review", assignedTo:null, thumbNum:"14?",
   },
   {
-    id:2, jersey:11, detected:1,
-    title:"Breakaway run, 2nd half, 61:05",
-    reason:"Single-digit vs. double-digit ambiguity. Number '1' read instead of '11'. Confusion pair 1↔11.",
+    id:2, detected:1, actual:11,
+    title:"Breakaway run down the right wing",
+    moment:"2nd half · 61:05",
+    reason:"Single-digit / double-digit ambiguity — model read #1 but frame shape suggests #11. Known confusion pair (1↔11). Held for review.",
     confidence:58,
-    thumbColor:"#3c1f5c", options:[{num:1,name:"Liam Okafor"},{num:11,name:"Jaden Brooks"}],
-    status:"review", assignedTo:null, thumbNum:"1?"
+    gradient:"linear-gradient(135deg,#8b5cf6,#3b82f6)",
+    options:[{num:1,name:"Liam Okafor"},{num:11,name:"Jaden Brooks"}],
+    status:"review", assignedTo:null, thumbNum:"1?",
   },
   {
-    id:3, jersey:21, detected:12,
-    title:"Through-ball assist, 1st half, 23:40",
-    reason:"Digit swap detected: model read '12' but roster has no #12. Closest match #21. Player partially occluded.",
+    id:3, detected:12, actual:21,
+    title:"Through-ball assist into the box",
+    moment:"1st half · 23:40",
+    reason:"Model read #12, but #12 isn't on the U14 Raptors roster. Digit-swap likely — closest roster match is #21 Lucas. Player was partially occluded at the moment of the play.",
     confidence:61,
-    thumbColor:"#1f5c3b", options:[{num:21,name:"Lucas Schmidt"},{num:null,name:"Not sure / flag for later"}],
-    status:"review", assignedTo:null, thumbNum:"12?"
+    gradient:"linear-gradient(135deg,#0ea371,#06b6d4)",
+    options:[{num:21,name:"Lucas Schmidt"},{num:null,label:"Not sure — skip for now"}],
+    status:"review", assignedTo:null, thumbNum:"12?",
   }
 ];
 
-let pickTarget = null;
-let pickNum = null;
+let pickTarget = null, pickNum = null;
+let reviewedOrder = [false,false,false]; // subtle: randomized order below 60% conf per spec
+
+function playerByNum(n){ return players.find(p=>p.num===n); }
 
 function render(){
   const list = document.getElementById('clipList');
+  const allDone = clips.every(c=>c.status!=='review');
+  if(allDone){ list.innerHTML = doneHTML(); syncRoster(); updateProgress(); updateSend(); return; }
+
   list.innerHTML = "";
-  clips.forEach(c => {
-    const el = document.createElement('div');
-    el.className = 'clip';
-    let statusBadge = "";
-    if(c.status === 'confirmed'){
-      const p = players.find(x=>x.num===c.assignedTo);
-      statusBadge = `<span class="badge b-ok">✓ Assigned to #${p.num} ${p.name.split(' ')[0]}</span>`;
-    } else if(c.status === 'skipped'){
-      statusBadge = `<span class="badge b-info">⊘ Skipped — won't send to any reel</span>`;
-    } else {
-      statusBadge = `<span class="badge b-warn">Needs review</span>`;
+  clips.forEach((c,idx) => {
+    if(c.status==='review'){
+      list.appendChild(renderClip(c,idx));
     }
-    el.innerHTML = `
-      <div class="thumb" style="background:linear-gradient(135deg,${c.thumbColor},#000)">
-        <div class="detected">Detected #${c.detected}</div>
-        <div class="jersey">${c.thumbNum}</div>
-        <div class="time">0:06</div>
-      </div>
-      <div class="meta">
-        <h3>${c.title} ${statusBadge}</h3>
-        <div class="reason">${c.reason}</div>
-        <div class="conf">Model confidence: ${c.confidence}%
-          <div class="confbar"><div style="width:${c.confidence}%"></div></div>
-        </div>
-        ${c.status==='review' ? `
-          <div class="who">
-            ${c.options.map(o=>`<span class="pill p-alt">#${o.num} ${o.name?o.name.split(' ')[0]:''}</span>`).join('')}
-          </div>
-          <div class="actions">
-            ${c.options.filter(o=>o.num!==null).map((o,i)=>
-              `<button class="${i===0?'primary':''}" onclick="quickAssign(${c.id},${o.num})">That's #${o.num} ${o.name.split(' ')[0]}</button>`
-            ).join('')}
-            <button onclick="openPicker(${c.id})">Someone else…</button>
-            <button class="danger" onclick="skipClip(${c.id})">Not a highlight / skip</button>
-          </div>` :
-          `<div class="actions"><button onclick="resetClip(${c.id})">Change</button></div>`
-        }
-      </div>`;
-    list.appendChild(el);
   });
-  renderRoster();
+  syncRoster();
   updateProgress();
+  updateSend();
 }
 
-function renderRoster(){
+function renderClip(c,idx){
+  const el = document.createElement('div');
+  el.className = 'clip';
+  const guesses = c.options.map(o=>{
+    if(o.num===null) return `<span class="pill p-guess">⊘ ${o.label}</span>`;
+    const p = playerByNum(o.num);
+    return `<span class="pill p-guess">#${o.num} ${p.name.split(' ')[0]}</span>`;
+  }).join('');
+  // randomize guess order if confidence < 60 (per spec: defends against tap-through muscle memory)
+  const orderedActions = (c.confidence < 60 && Math.random()>0.5) ? [...c.options].reverse() : c.options;
+  const quickBtns = orderedActions.map(o=>{
+    if(o.num===null) return `<button class="danger" onclick="skipClip(${c.id})">Not sure — skip</button>`;
+    const p = playerByNum(o.num);
+    return `<button class="${o===c.options[0]?'primary':''}" onclick="quickAssign(${c.id},${o.num})">That's #${o.num} ${p.name.split(' ')[0]} ${o===c.options[0]?'✓':''}</button>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="thumb">
+      <div class="field"></div>
+      <div class="detected">Model detected #${c.detected}</div>
+      <div class="jersey" style="background:${c.gradient};-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">${c.thumbNum}</div>
+      <div class="time">0:06 · ${c.moment}</div>
+      <div class="play"><div class="play-btn">▶</div></div>
+    </div>
+    <div class="meta">
+      <div class="meta-top">
+        <div>
+          <h3>${c.title}</h3>
+          <div class="moment">${c.moment} · ${c.actual ? '' : ''}</div>
+        </div>
+        <span class="badge b-amber"><span class="pulse"></span>Needs review</span>
+      </div>
+      <div class="reason">${c.reason}</div>
+      <div class="conf">
+        Model confidence: <b style="color:${c.confidence<50?'var(--red)':c.confidence<70?'var(--amber)':'var(--green)'}">${c.confidence}%</b>
+        <div class="confbar"><div style="width:${c.confidence}%"></div></div>
+      </div>
+      <div class="who">${guesses}</div>
+      <div class="actions">
+        ${quickBtns}
+        <button class="secondary" onclick="openPicker(${c.id})">Pick someone else…</button>
+      </div>
+    </div>`;
+  return el;
+}
+
+function doneHTML(){
+  const confirmed = clips.filter(c=>c.status==='confirmed').length;
+  const skipped = clips.filter(c=>c.status==='skipped').length;
+  return `
+    <div class="card" style="padding:40px 30px;text-align:center">
+      <div class="done">
+        <div class="check-big">✓</div>
+        <h2>All caught up</h2>
+        <p>You reviewed ${clips.length} flagged clip${clips.length===1?'':'s'} in about a minute.
+        ${confirmed} confirmed, ${skipped} skipped. These corrections train the tagger for next week's games.
+        Personal reels will hit every family's inbox at 9 AM sharp — no late-night pings.</p>
+        <div class="done-stats">
+          <div class="ds"><div class="n">19</div><div class="l">Clips in recap</div></div>
+          <div class="ds"><div class="n">${confirmed}</div><div class="l">You confirmed</div></div>
+          <div class="ds"><div class="n">${skipped}</div><div class="l">Skipped</div></div>
+          <div class="ds"><div class="n">16</div><div class="l">Families notified at 9 AM</div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function syncRoster(){
   const r = document.getElementById('roster');
   r.innerHTML = players.map(p=>{
-    const flagged = clips.some(c => c.status==='review' && c.options.some(o=>o.num===p.num));
-    return `<div class="roster-item">
+    const clip = clips.find(c=>c.status==='review' && c.options.some(o=>o.num===p.num));
+    const fixed = clips.find(c=>c.status==='confirmed' && c.assignedTo===p.num);
+    let cls='roster-item';
+    let tag = '';
+    if(fixed){cls+=' fixed'; tag='<span class="cnt" style="color:var(--green)">✓ confirmed</span>';}
+    else if(clip){cls+=' flagged'; tag='<span class="cnt" style="color:var(--amber)">needs review</span>';}
+    else{tag=`<span class="cnt">${p.clips} clip${p.clips===1?'':'s'}</span>`;}
+    return `<div class="${cls}">
       <div class="num">${p.num}</div>
-      <div class="name">${p.name}${flagged?' <span class="badge b-warn" style="margin-left:6px">flag</span>':''}</div>
-      <div class="cnt">${p.clips} clip${p.clips===1?'':'s'}</div>
+      <div class="name">${p.name}</div>
+      ${tag}
     </div>`;
   }).join('');
 }
@@ -286,44 +572,63 @@ function renderRoster(){
 function updateProgress(){
   const total = clips.length;
   const done = clips.filter(c=>c.status!=='review').length;
-  document.getElementById('s-fixed').textContent = clips.filter(c=>c.status==='confirmed').length;
+  const confirmed = clips.filter(c=>c.status==='confirmed').length;
+  document.getElementById('s-review').textContent = total - done;
+  document.getElementById('s-auto').textContent = 16 + confirmed; // pre-existing auto-confirmed
+  document.getElementById('s-fixed').textContent = confirmed;
+  document.getElementById('s-fixed').style.color = confirmed>0?'var(--green)':'var(--muted)';
   document.getElementById('progBar').style.width = (done/total*100)+'%';
-  document.getElementById('progText').textContent = `${done} / ${total} reviewed`;
+  const t = document.getElementById('progText');
+  if(done===total){ t.innerHTML = `<span class="prog-done">✓ ${done} of ${total} reviewed</span>`; }
+  else { t.innerHTML = `<span style="color:var(--muted)">${done} of ${total} reviewed</span>`; }
+}
+
+function updateSend(){
+  const done = clips.filter(c=>c.status!=='review').length;
+  const total = clips.length;
   const btn = document.getElementById('sendBtn');
-  const msg = document.getElementById('readyMsg');
+  const title = document.getElementById('sendTitle');
+  const msg = document.getElementById('sendMsg');
+  const card = document.getElementById('sendCard');
   if(done===total){
-    btn.disabled = false;
-    msg.innerHTML = `<span style="color:var(--accent)">All set.</span> Personal reels will go to each family; the shared recap goes to everyone.`;
+    btn.disabled=false;
+    title.textContent='Ready to send to 16 families';
+    msg.innerHTML='All clips are confirmed. Personal reels will be delivered at 9 AM tomorrow morning, each with the parent\'s own kid as the thumbnail. The shared team recap goes to everyone on the roster.';
   } else {
-    btn.disabled = true;
-    msg.textContent = `Finish reviewing the ${total-done} flagged clip${total-done===1?'':'s'} to unlock send.`;
+    btn.disabled=true;
+    title.textContent=`Review ${total-done} more clip${total-done===1?'':'s'} before sending`;
+    msg.textContent=`Once you confirm the flagged clips, we'll send the weekly recap to all 16 families. Each family gets their kid's personal reel + the team recap. We'll hold send until you're ready.`;
   }
 }
 
 function quickAssign(id,num){
-  const c = clips.find(x=>x.id===id);
+  const c=clips.find(x=>x.id===id), p=playerByNum(num);
   c.status='confirmed'; c.assignedTo=num;
-  toast(`Assigned to #${num}`);
+  toast(`Assigned to #${num} ${p.name.split(' ')[0]}`);
   render();
 }
 function skipClip(id){
-  const c = clips.find(x=>x.id===id);
+  const c=clips.find(x=>x.id===id);
   c.status='skipped';
   toast("Skipped — won't appear in any reel");
   render();
 }
-function resetClip(id){
-  const c = clips.find(x=>x.id===id);
-  c.status='review'; c.assignedTo=null;
-  render();
-}
 function openPicker(id){
-  pickTarget = id; pickNum = null;
-  const grid = document.getElementById('numGrid');
-  grid.innerHTML = players.map(p=>
-    `<button onclick="pick(${p.num},this)">#${p.num}<br><span style="font-size:11px;color:var(--muted);font-weight:400">${p.name.split(' ')[0]}</span></button>`
-  ).join('');
+  pickTarget=id; pickNum=null;
+  document.getElementById('playerSearch').value='';
+  renderPicker();
   document.getElementById('modal').classList.add('open');
+  setTimeout(()=>document.getElementById('playerSearch').focus(),100);
+}
+function renderPicker(){
+  const q = document.getElementById('playerSearch').value.toLowerCase().trim();
+  const filtered = players.filter(p=>!q || p.name.toLowerCase().includes(q) || String(p.num).startsWith(q));
+  const grid = document.getElementById('numGrid');
+  grid.innerHTML = filtered.map(p=>
+    `<button onclick="pick(${p.num},this)" ${pickNum===p.num?'class="sel"':''}>
+       <span class="n">#${p.num}</span>&nbsp; ${p.name}
+     </button>`
+  ).join('') || `<div style="grid-column:1/-1;color:var(--muted);padding:10px;text-align:center">No matching players</div>`;
 }
 function pick(n,btn){
   pickNum=n;
@@ -336,16 +641,38 @@ function confirmAssign(){
   quickAssign(pickTarget,pickNum);
   closeModal();
 }
-function saveDraft(){toast("Draft saved");}
+function saveDraft(){toast("Draft saved — come back anytime");}
 function sendRecap(){
-  document.getElementById('conflictBox').innerHTML = "<b style='color:var(--accent)'>✓ Recap sent!</b> Personal reels delivered to 16 families. Notifications scheduled for 9:00 AM local time.";
-  document.querySelector('.final-card').innerHTML = "<h3 style='margin:0;color:var(--accent)'>✓ Weekly recap sent</h3><div style='color:var(--muted);font-size:14px;margin-top:6px'>Thank you for reviewing. Parents will get their reels in the morning. Your corrections are being fed back into the tagger to improve next week's auto-tags.</div>";
-  toast("Recap sent to 16 families");
+  document.getElementById('conflictBox').style.display='none';
+  const card = document.getElementById('sendCard');
+  card.style.background='linear-gradient(135deg,#0ea371,#059669)';
+  document.getElementById('sendTitle').textContent='✓ Weekly recap is scheduled!';
+  document.getElementById('sendMsg').innerHTML="Personal reels will reach all 16 families tomorrow at <b>9:00 AM local</b>. Each parent sees their own kid as the thumbnail. Your corrections have been fed back to the tagger — expect even fewer flags next game. 🎉";
+  document.getElementById('sendBtn').outerHTML='';
+  document.querySelector('.send-card .actions').innerHTML=`
+    <button class="primary" onclick="toast('Link copied — share it out!')">Copy shareable recap link</button>
+    <button class="ghost" onclick="toast('Done.')">Back to dashboard</button>`;
+  document.getElementById('mainCol').insertAdjacentHTML('afterbegin', doneHTML());
+  document.getElementById('clipList').innerHTML='<div style="height:20px"></div>';
+  syncRoster();
+  updateProgress();
+  toast("Recap scheduled for 9 AM tomorrow");
+  document.querySelector('.pulse')?.classList.replace('pulse','pulse green');
 }
 function toast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),1800);
+  const t=document.getElementById('toast');
+  document.getElementById('toastText').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
 }
+
+// close modal on backdrop click
+document.getElementById('modal').addEventListener('click',e=>{
+  if(e.target.id==='modal') closeModal();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeModal();
+});
 
 render();
 </script>
